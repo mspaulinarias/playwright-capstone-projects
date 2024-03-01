@@ -11,6 +11,7 @@ test('Test Successfull login', async ({ page }) => {
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle('Swag Labs')
+  //paulin comment
   await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html')
   
 });
