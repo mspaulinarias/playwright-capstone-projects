@@ -10,11 +10,11 @@ export class login {
   readonly errormessageString: Locator;
   readonly menuButton: Locator;
   readonly logoutLink: Locator;
+  //test: string;
   readonly url: URL; //FIXME:como validar una URL dentro de un POM
   
- 
 
-  constructor(page: Page) {
+  constructor(page: Page, test = 'hola test') {
 
         this.usernameTextbox = page.getByRole('textbox', {name: 'Username'})
         this.passwordTextbox = page.getByRole('textbox', {name: 'Password'})
@@ -26,19 +26,20 @@ export class login {
 
         this.menuButton = page.getByRole('button', {name: 'Open Menu'})
         this.logoutLink = page.getByRole('link', { name: 'Logout' })
-        
-    
+  
   }
 
   async loginWithCredential(username:string, password: string){ 
     await this.usernameTextbox.fill(username)
     await this.passwordTextbox.fill(password)
     await this.loginButton.click()
+    //this.test = 'hola' 
   } 
 
   async checkSuccessfullLogin(){ 
     await expect(this.shoppingCardIcon).toBeVisible()//Se crea este método para validar el expected result de que el icono si sea visible
     await expect(this.titlePage).toHaveText('Swag Labs')
+
   
   //expect(this.url).toEqual('https://www.saucedemo.com/invent.html') 
   
@@ -47,6 +48,7 @@ export class login {
   async errorMessageLogin(){
     const expectedErrorMessage = 'Epic sadface: Username and password do not match any user in this service'
     await expect(this.errormessageString).toHaveText(expectedErrorMessage) //encontrar el texto exacto
+  
   
   }
   
