@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { error } from 'console';
+import { assert, error } from 'console';
 import exp from 'constants';
 import { login } from '../src/login';
 import { inventoryShoppingcard } from '../src/inventoryShoppingCard';
@@ -9,34 +9,38 @@ import { checkout } from '../src/checkout';
 import { checkoutOverview } from '../src/checkoutOverview';
 import { checkoutComplete } from '../src/checkoutComplete';
 
+test.beforeEach(async ({page})=> {
+  await page.goto('/')
+})
+
 test('Test successfull login', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/') //FIXME:Como hago para llevar esta url al constructor? 
+  
   const loginmainpage = new login(page) //Cuando abro los () estoy invocando al constructor.
   await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
-  await loginmainpage.checkSuccessfullLogin()
+  await loginmainpage.checkSuccessfullLogin(page)
 
-  
+
 });
 
 test('Test invalid password', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/') 
-    const loginmainpage = new login(page) //Cuando abro los () estoy invocando al constructor.
+    
+    const loginmainpage = new login(page) 
     await loginmainpage.loginWithCredential('standard_user', 'incorrectPassword')
     await loginmainpage.errorMessageLogin()
     
   });
 
   test('Test logout', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/')//FIXME:Como hago para llevar esta url al constructor? 
+    
     const loginmainpage = new login(page) 
     await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
     await loginmainpage.successfullLogout()
-
+    
 
 }); 
 
 test('Test adding an item to a shopping card', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/')
+  
   const loginmainpage = new login(page) 
   await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
 
@@ -46,8 +50,8 @@ test('Test adding an item to a shopping card', async ({ page }) => {
 }); 
 
 test('Test removing an item from shopping cart', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/')
-  const loginmainpage = new login(page) //Cuando abro los () estoy invocando al constructor.
+  
+  const loginmainpage = new login(page)
   await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
 
   const inventory = new inventoryShoppingcard(page)
@@ -57,7 +61,7 @@ test('Test removing an item from shopping cart', async ({ page }) => {
 }); 
 
 test('Test card in shopping cart', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/')
+  
   const loginmainpage = new login(page)
   await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
 
@@ -69,10 +73,10 @@ test('Test card in shopping cart', async ({ page }) => {
  
 });
  
-//DUDA: cuando tengo un escenario como este, cierto que deberia invocar previo todos los metodos previos relacionados a la compra y luego
+//DUDA: cuando tengo un escenario como este, cierto que deberia invocar previo todos los metodos relacionados a la compra y luego
 //crear el método ppal que en este caso sería hacer un checkout?
 test('Test successfull checkout', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/')
+ 
   const loginmainpage = new login(page)
   await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
 
@@ -89,10 +93,10 @@ test('Test successfull checkout', async ({ page }) => {
 }); 
 
 test('Test cancel checkout', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/')
-  const loginmainpage = new login(page)
   
+  const loginmainpage = new login(page)
   await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
+  
   const inventory = new inventoryShoppingcard(page)
   await inventory.selectItemShoppingCard()
 
@@ -104,7 +108,7 @@ test('Test cancel checkout', async ({ page }) => {
 });
 
 test('Test mandatory fields checkout page', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/')
+  
   const loginmainpage = new login(page)
   await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
 
@@ -116,13 +120,13 @@ test('Test mandatory fields checkout page', async ({ page }) => {
 
   const checkoutinfo = new checkout(page)
   await checkoutinfo.validateMandatoryFirstNameCheckout('Rodriguez', '6789034')
-  //await checkoutinfo.validateMandatoryLastNameCheckout('Anny','777111000')
-  //await checkoutinfo.validateMandatoryZipcodeCheckout('Daniela', 'Marin')
+  await checkoutinfo.validateMandatoryLastNameCheckout('Anny','777111000')
+  await checkoutinfo.validateMandatoryZipcodeCheckout('Daniela', 'Marin')
 
 });
 
   test('Test checkout Overview info', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/')
+    
     const loginmainpage = new login(page)
     await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
   
@@ -141,7 +145,7 @@ test('Test mandatory fields checkout page', async ({ page }) => {
 });
 
 test('Test checkout complete', async ({ page }) => {
-  await page.goto('https://www.saucedemo.com/')
+  
   const loginmainpage = new login(page)
   await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
 
@@ -155,10 +159,10 @@ test('Test checkout complete', async ({ page }) => {
   await checkoutinfo.fillInCheckoutInfo('Olivia','Mendez','567890123')
 
   const checkoverview = new checkoutOverview(page)
-  await checkoverview.checkfinishButton()
+  await checkoverview.checkFinishButton()
 
   const checkcomplete = new checkoutComplete(page)
-  await checkcomplete.OrderSuccessfullyDispatched()
+  await checkcomplete.orderSuccessfullyDispatched()
 
 });
 

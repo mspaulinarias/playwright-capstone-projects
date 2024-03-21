@@ -7,16 +7,12 @@ export class card {
   readonly descriptionString: Locator;
   readonly priceInt: Locator;
   readonly checkoutButton: Locator;
-  
-  
 
   constructor(page: Page, test = 'hola test') {
-
-        this.quantityInt = page.locator('div[class="cart_quantity"]')
-        this.descriptionString = page.locator('a[id="item_4_title_link"]')
-        this.priceInt = page.locator('div[class="inventory_item_price"]')
-        this.checkoutButton = page.getByRole('button', {name: 'Checkout'})
-  
+    this.quantityInt = page.locator('div[class="cart_quantity"]')
+    this.descriptionString = page.locator('a[id="item_4_title_link"]')
+    this.priceInt = page.locator('div[class="inventory_item_price"]')
+    this.checkoutButton = page.getByRole('button', {name: 'Checkout'})
   }
 
   async checkItemCard(){ 

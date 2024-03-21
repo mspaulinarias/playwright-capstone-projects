@@ -1,40 +1,52 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { deepEqual } from 'assert';
+import { assert } from 'console';
+import exp from 'constants';
+import { toNamespacedPath } from 'path';
+import { execPath } from 'process';
 
 export class checkoutOverview{
-    readonly PaymentInformationText: Locator;
-    readonly ShippingInformationText: Locator;
-    readonly PriceTotalText: Locator;
-    readonly SauceCardText: Locator;
-    readonly FreePonyExpressText: Locator;
-    readonly FinishButton: Locator;
-    
-    
+    readonly paymentInformationText: Locator;
+    readonly shippingInformationText: Locator;
+    readonly priceTotalText: Locator;
+    readonly sauceCardText: Locator;
+    readonly freePonyExpressText: Locator;
+    readonly finishButton: Locator;
+    readonly subtotalPrice: Locator;
+    readonly totalPrice: Locator;
 
   constructor(page: Page) {
-    //FIXME: Ayuda con los localizadores, cuando tenemos varios elementos de tipo class que son iguales.
-    this.PaymentInformationText = page.locator('#checkout_summary_container > div > div.summary_info > div:nth-child(1)')
-    this.ShippingInformationText = page.locator('#checkout_summary_container > div > div.summary_info > div:nth-child(3)')
-    this.PriceTotalText = page.locator('#checkout_summary_container > div > div.summary_info > div:nth-child(5)')
-
-    this.SauceCardText = page.locator('#checkout_summary_container > div > div.summary_info > div:nth-child(2)')
-    this.FreePonyExpressText = page.locator('#checkout_summary_container > div > div.summary_info > div:nth-child(4)')
-
-    this.FinishButton = page.getByRole('button', {name: 'Finish'})
-
+    this.paymentInformationText = page.locator('//div[@class="summary_info_label"][1]')
+    this.shippingInformationText = page.locator('//div[@class="summary_info_label"][2]')
+    this.priceTotalText = page.locator('//div[@class="summary_info_label"][3]')
+    
+    this.totalPrice = page.locator('//div[@class="inventory_item_price"]')
+    this.subtotalPrice = page.locator('//div[@class="summary_subtotal_label"][1]')
+    
+    this.sauceCardText = page.locator('//div[@class="summary_value_label"][1]')
+    this.freePonyExpressText = page.locator('//div[@class="summary_value_label"][2]')
+    this.finishButton = page.getByRole('button', {name: 'Finish'})
 
   }
 
   async checkoutOverviewInfo(){
-    await expect(this.PaymentInformationText).toBeVisible()
-    await expect(this.SauceCardText).toHaveText('SauceCard #31337')
-    await expect(this.ShippingInformationText).toBeVisible()
-    await expect(this.FreePonyExpressText).toHaveText('Free Pony Express Delivery!')
-    await expect(this.PriceTotalText).toBeVisible()
+    
+    await expect(this.paymentInformationText).toBeVisible()
+    await expect(this.sauceCardText).toHaveText('SauceCard #31337')
+    await expect(this.shippingInformationText).toBeVisible()
+    await expect(this.freePonyExpressText).toHaveText('Free Pony Express Delivery!')
+    await expect(this.priceTotalText).toBeVisible()
+
+    // COMMENT: Revisar si esta lógica estaría bien para comparar dos valores. Asi como está me funcionó. 
+    const total = expect(this.totalPrice).toHaveText('$29.99')
+    const subtotal = expect(this.subtotalPrice).toContainText('$29.99')
+    expect(total).toEqual(subtotal)
+    
   }
 
-  async checkfinishButton(){
-    await expect(this.FinishButton).toBeVisible()
-    await this.FinishButton.click()
+  async checkFinishButton(){
+    await expect(this.finishButton).toBeVisible()
+    await this.finishButton.click()
   }
 
 }

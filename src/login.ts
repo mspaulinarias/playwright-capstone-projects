@@ -1,4 +1,6 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { AssertionError } from 'assert';
+import { error } from 'console';
 import exp from 'constants';
 
 export class login {
@@ -11,8 +13,8 @@ export class login {
   readonly menuButton: Locator;
   readonly logoutLink: Locator;
   //test: string;
-  readonly url: URL; //FIXME:como validar una URL dentro de un POM
   
+
 
   constructor(page: Page, test = 'hola test') {
 
@@ -26,6 +28,7 @@ export class login {
 
         this.menuButton = page.getByRole('button', {name: 'Open Menu'})
         this.logoutLink = page.getByRole('link', { name: 'Logout' })
+
   
   }
 
@@ -36,13 +39,13 @@ export class login {
     //this.test = 'hola' 
   } 
 
-  async checkSuccessfullLogin(){ 
+  async checkSuccessfullLogin(page: Page){ 
     await expect(this.shoppingCardIcon).toBeVisible()//Se crea este método para validar el expected result de que el icono si sea visible
     await expect(this.titlePage).toHaveText('Swag Labs')
+    //COMMENT: Aqui valido que ingrese a la url correcta de inventory. Revisar si esta lógica esta bien. funciona el caso de prueba
+    await expect(page).toHaveURL('/inventory.html') //hace un partial match de la url
 
-  
-  //expect(this.url).toEqual('https://www.saucedemo.com/invent.html') 
-  
+
   }
 
   async errorMessageLogin(){
@@ -58,8 +61,6 @@ export class login {
 
     await expect(this.loginButton).toBeVisible()
     
-    /*FIXME: Como logro declararlo en el constructor?
-    const logout = 'https://www.saucedemo.com/'
-    await expect(logout).toHaveURL(logout)*/
+    
   }
 }

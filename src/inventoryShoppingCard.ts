@@ -8,7 +8,6 @@ export class inventoryShoppingcard {
     readonly shoppingCardbutton: Locator;
     readonly removebutton: Locator;
 
-
     constructor (page: Page){
        this.itemnameInShoppoingCard = page.locator('a[id="item_4_title_link"]')
        this.addToCardButton = page.locator('button[id="add-to-cart-sauce-labs-backpack"]')
@@ -34,7 +33,6 @@ export class inventoryShoppingcard {
 
         await expect(this.itemnameInShoppoingCard).not.toBeVisible()
 
-
     }
-
+    
 }
