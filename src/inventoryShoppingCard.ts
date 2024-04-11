@@ -16,21 +16,19 @@ export class inventoryShoppingcard {
 
     }
 
-    async selectItemShoppingCard(){
+    async verifyAddItemShoppingCard(expectedTextItem: string){
         //Pregunta: Para ejecutar el método, debe diseñarse en el orden en que se debe de ejecutar el flow?
         await expect(this.itemnameInShoppoingCard).toBeVisible()
         await this.addToCardButton.click()
-        
         await this.shoppingCardbutton.click()
-        const textItem = 'Sauce Labs Backpack'
-        await expect(this.itemnameInShoppoingCard).toHaveText(textItem)
+        await expect(this.itemnameInShoppoingCard).toHaveText(expectedTextItem)
         
     }
 
     async removeItemShoppingcard(){
         await expect(this.removebutton).toBeVisible()
         await this.removebutton.click()
-
+        
         await expect(this.itemnameInShoppoingCard).not.toBeVisible()
 
     }

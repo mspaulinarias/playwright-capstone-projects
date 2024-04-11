@@ -2,8 +2,9 @@ import { expect, type Locator, type Page } from '@playwright/test';
 import { AssertionError } from 'assert';
 import { error } from 'console';
 import exp from 'constants';
+import { Url } from 'url';
 
-export class login {
+export class login { //todas las clases los nombres inician con mayuscula corregir
   readonly usernameTextbox: Locator;
   readonly passwordTextbox: Locator;
   readonly loginButton: Locator;
@@ -32,27 +33,26 @@ export class login {
   
   }
 
-  async loginWithCredential(username:string, password: string){ 
+  async verifyLoginWithCredential(username:string, password: string){ 
     await this.usernameTextbox.fill(username)
     await this.passwordTextbox.fill(password)
     await this.loginButton.click()
     //this.test = 'hola' 
   } 
 
-  async checkSuccessfullLogin(page: Page){ 
+  async checkSuccessfullLogin(page: Page,  expectedInventory: string, expectedTiltePage: string,){ //Aqui ordenar los pasos url, carrito y title. 
     await expect(this.shoppingCardIcon).toBeVisible()//Se crea este método para validar el expected result de que el icono si sea visible
-    await expect(this.titlePage).toHaveText('Swag Labs')
+    await expect(this.titlePage).toHaveText(expectedTiltePage) 
     //COMMENT: Aqui valido que ingrese a la url correcta de inventory. Revisar si esta lógica esta bien. funciona el caso de prueba
-    await expect(page).toHaveURL('/inventory.html') //hace un partial match de la url
+    await expect(page).toHaveURL(expectedInventory) //hace un partial match de la url
 
 
   }
 
-  async errorMessageLogin(){
-    const expectedErrorMessage = 'Epic sadface: Username and password do not match any user in this service'
+  async errorMessageLogin(expectedErrorMessage: string){
     await expect(this.errormessageString).toHaveText(expectedErrorMessage) //encontrar el texto exacto
   
-  
+    
   }
   
   async successfullLogout(){

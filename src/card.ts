@@ -15,16 +15,16 @@ export class card {
     this.checkoutButton = page.getByRole('button', {name: 'Checkout'})
   }
 
-  async checkItemCard(){ 
+  async verifyCheckItemCard(expectedItemdesc: string){ 
     await expect(this.quantityInt).toHaveCount(1)
-    await expect(this.descriptionString).toHaveText('Sauce Labs Backpack')
+    await expect(this.descriptionString).toHaveText(expectedItemdesc)
     //FIXME: Como puedo mejorar este expected relacionado al precio, ya que no tiene un id o un localizador que lo haga único,
     // Por ende, la opción más viable que ví fué hacer un assertion por toHaveText. Pero que pasa si otro producto tiene el mismo precio?
     await expect(this.priceInt).toHaveText('$29.99')
     
   } 
 
-  async openCheckoutInfoPage(){
+  async verifyOpenCheckoutInfoPage(){
     await this.checkoutButton.click()
   }
 

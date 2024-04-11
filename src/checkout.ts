@@ -31,34 +31,34 @@ export class checkout{
     this.closeButton = page.locator('button[class="error-button"]')
   }
 
-  async fillInCheckoutInfo(firstname: string, lastname: string, zipcode: string){
+  async verifyFillInCheckoutInfo(firstname: string, lastname: string, zipcode: string){
     await this.firstNameText.fill(firstname)
     await this.lastNameText.fill(lastname)
     await this.zipcodeText.fill(zipcode)
     await this.continueButton.click()
   }
 
-  async checkSuccessfullCheckout(){
+  async verifyCheckSuccessfullCheckout(){
     await expect(this.checkoutOverviewPageTitle).toHaveText('Checkout: Overview')
   }
 
-  async cancelCheckout(){
+  async verifyCancelCheckout(){
     await this.cancelButton.click()
     await expect(this.yourCardTitle).toHaveText('Your Cart')
     await expect(this.page).toHaveURL('/cart.html')
 
   }
 
-  async validateMandatoryFirstNameCheckout(lastname: string, zipcode: string){
+  async validateMandatoryFirstNameCheckout(lastname: string, zipcode: string, expecErrorFname: string){
     await this.lastNameText.fill(lastname)
     await this.zipcodeText.fill(zipcode)
     await this.continueButton.click()
 
-    await expect(this.errorMessage).toHaveText("Error: First Name is required")
+    await expect(this.errorMessage).toHaveText(expecErrorFname)
   }
 
   //COMMENT: Aqui ya se arregló primero se limpian los campos y luego se da click en el boton "x" parar borrar el msg error anterior
-  async validateMandatoryLastNameCheckout(firstname: string, zipcode: string){
+  async validateMandatoryLastNameCheckout(firstname: string, zipcode: string, expecErrorLname){
     await this.lastNameText.clear()
     await this.closeButton.click()
    
@@ -66,11 +66,11 @@ export class checkout{
     await this.zipcodeText.fill(zipcode)
     await this.continueButton.click()
 
-    await expect(this.errorMessage).toHaveText("Error: Last Name is required")
+    await expect(this.errorMessage).toHaveText(expecErrorLname)
 
   }  
   
-  async validateMandatoryZipcodeCheckout(firstname: string, lastname: string){
+  async validateMandatoryZipcodeCheckout(firstname: string, lastname: string, expectedErrorZip){
     await this.zipcodeText.clear()
     await this.closeButton.click()
 
@@ -78,7 +78,7 @@ export class checkout{
     await this.lastNameText.fill(lastname)
     await this.continueButton.click()
 
-    await expect(this.errorMessage).toHaveText("Error: Postal Code is required")
+    await expect(this.errorMessage).toHaveText(expectedErrorZip)
 
   }
 }

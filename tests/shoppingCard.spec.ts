@@ -13,49 +13,26 @@ test.beforeEach(async ({page})=> {
   await page.goto('/')
 })
 
-test('Test successfull login', async ({ page }) => {
-  
-  const loginmainpage = new login(page) //Cuando abro los () estoy invocando al constructor.
-  await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
-  await loginmainpage.checkSuccessfullLogin(page)
-
-
-});
-
-test('Test invalid password', async ({ page }) => {
-    
-    const loginmainpage = new login(page) 
-    await loginmainpage.loginWithCredential('standard_user', 'incorrectPassword')
-    await loginmainpage.errorMessageLogin()
-    
-  });
-
-  test('Test logout', async ({ page }) => {
-    
-    const loginmainpage = new login(page) 
-    await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
-    await loginmainpage.successfullLogout()
-    
-
-}); 
-
+//COMMENT: SE AJUSTÓ EL EXPECTED RESULT, ANEXANDOSE DESDE AQUÍ
 test('Test adding an item to a shopping card', async ({ page }) => {
   
   const loginmainpage = new login(page) 
-  await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
+  await loginmainpage.verifyLoginWithCredential('standard_user', 'secret_sauce')
 
   const inventory = new inventoryShoppingcard(page)
-  await inventory.selectItemShoppingCard()
+  const expectedTextItem = 'Sauce Labs Backpack'
+  await inventory.verifyAddItemShoppingCard(expectedTextItem)
 
 }); 
 
 test('Test removing an item from shopping cart', async ({ page }) => {
   
   const loginmainpage = new login(page)
-  await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
+  await loginmainpage.verifyLoginWithCredential('standard_user', 'secret_sauce')
 
   const inventory = new inventoryShoppingcard(page)
-  await inventory.selectItemShoppingCard()
+  const expectedTextItem = 'Sauce Labs Backpack'
+  await inventory.verifyAddItemShoppingCard(expectedTextItem)
   await inventory.removeItemShoppingcard()
 
 }); 
@@ -63,106 +40,16 @@ test('Test removing an item from shopping cart', async ({ page }) => {
 test('Test card in shopping cart', async ({ page }) => {
   
   const loginmainpage = new login(page)
-  await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
+  await loginmainpage.verifyLoginWithCredential('standard_user', 'secret_sauce')
 
   const inventory = new inventoryShoppingcard(page)
-  await inventory.selectItemShoppingCard()
+  const expectedTextItem = 'Sauce Labs Backpack'
+  await inventory.verifyAddItemShoppingCard(expectedTextItem)
 
   const cardItem = new card(page)
-  await cardItem.checkItemCard()
+  const expectedItemdesc = 'Sauce Labs Backpack'
+  await cardItem.verifyCheckItemCard(expectedItemdesc)
  
 });
  
-//DUDA: cuando tengo un escenario como este, cierto que deberia invocar previo todos los metodos relacionados a la compra y luego
-//crear el método ppal que en este caso sería hacer un checkout?
-test('Test successfull checkout', async ({ page }) => {
- 
-  const loginmainpage = new login(page)
-  await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
-
-  const inventory = new inventoryShoppingcard(page)
-  await inventory.selectItemShoppingCard()
-
-  const cardItem = new card(page)
-  await cardItem.openCheckoutInfoPage()
-
-  const checkoutinfo = new checkout(page)
-  await checkoutinfo.fillInCheckoutInfo('Daniel', 'Parra', '5001')
-  await checkoutinfo.checkSuccessfullCheckout()
- 
-}); 
-
-test('Test cancel checkout', async ({ page }) => {
-  
-  const loginmainpage = new login(page)
-  await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
-  
-  const inventory = new inventoryShoppingcard(page)
-  await inventory.selectItemShoppingCard()
-
-  const cardItem = new card(page)
-  await cardItem.openCheckoutInfoPage()
-
-  const checkoutinfo = new checkout(page)
-  await checkoutinfo.cancelCheckout()
-});
-
-test('Test mandatory fields checkout page', async ({ page }) => {
-  
-  const loginmainpage = new login(page)
-  await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
-
-  const inventory = new inventoryShoppingcard(page)
-  await inventory.selectItemShoppingCard()
-
-  const cardItem = new card(page)
-  await cardItem.openCheckoutInfoPage()
-
-  const checkoutinfo = new checkout(page)
-  await checkoutinfo.validateMandatoryFirstNameCheckout('Rodriguez', '6789034')
-  await checkoutinfo.validateMandatoryLastNameCheckout('Anny','777111000')
-  await checkoutinfo.validateMandatoryZipcodeCheckout('Daniela', 'Marin')
-
-});
-
-  test('Test checkout Overview info', async ({ page }) => {
-    
-    const loginmainpage = new login(page)
-    await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
-  
-    const inventory = new inventoryShoppingcard(page)
-    await inventory.selectItemShoppingCard()
-  
-    const cardItem = new card(page)
-    await cardItem.openCheckoutInfoPage()
-  
-    const checkoutinfo = new checkout(page)
-    await checkoutinfo.fillInCheckoutInfo('Olivia','Mendez','567890123')
-
-    const checkoverview = new checkoutOverview(page)
-    await checkoverview.checkoutOverviewInfo()
-  
-});
-
-test('Test checkout complete', async ({ page }) => {
-  
-  const loginmainpage = new login(page)
-  await loginmainpage.loginWithCredential('standard_user', 'secret_sauce')
-
-  const inventory = new inventoryShoppingcard(page)
-  await inventory.selectItemShoppingCard()
-
-  const cardItem = new card(page)
-  await cardItem.openCheckoutInfoPage()
-
-  const checkoutinfo = new checkout(page)
-  await checkoutinfo.fillInCheckoutInfo('Olivia','Mendez','567890123')
-
-  const checkoverview = new checkoutOverview(page)
-  await checkoverview.checkFinishButton()
-
-  const checkcomplete = new checkoutComplete(page)
-  await checkcomplete.orderSuccessfullyDispatched()
-
-});
 

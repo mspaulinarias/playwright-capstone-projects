@@ -29,18 +29,22 @@ export class checkoutOverview{
 
   }
 
-  async checkoutOverviewInfo(){
+  async   verifyOverviewInfo(expectedCredicard: string, expectedShippingInformation: string, expectedtotalPrice: string, expectedsubtotalPrice: string ){ //ex: verifyOverviewInfo() otra cosa, ajustar todos los POMs
+    // y ver cuales de ellos adentro se conservaria el expect y cuales deberían de pasar directamente a los test cases. 
     
-    await expect(this.paymentInformationText).toBeVisible()
-    await expect(this.sauceCardText).toHaveText('SauceCard #31337')
+    await expect(this.paymentInformationText).toBeVisible() //no agregan valor este método
+    await expect(this.sauceCardText).toHaveText(expectedCredicard) //updated
+
     await expect(this.shippingInformationText).toBeVisible()
-    await expect(this.freePonyExpressText).toHaveText('Free Pony Express Delivery!')
+    await expect(this.freePonyExpressText).toHaveText(expectedShippingInformation)
     await expect(this.priceTotalText).toBeVisible()
 
-    // COMMENT: Revisar si esta lógica estaría bien para comparar dos valores. Asi como está me funcionó. 
-    const total = expect(this.totalPrice).toHaveText('$29.99')
-    const subtotal = expect(this.subtotalPrice).toContainText('$29.99')
-    expect(total).toEqual(subtotal)
+    // COMMENT: Comparando dos valores, que sean iguales
+    const total = expect(this.totalPrice).toHaveText(expectedtotalPrice)
+    const subtotal = expect(this.subtotalPrice).toContainText(expectedsubtotalPrice)
+    //const subtoalPriceContent = await this.subtotalPrice.allInnerTexts()
+    //console.log('Total Price Content = ', subtoalPriceContent)
+    await expect(total).toEqual(subtotal)
     
   }
 

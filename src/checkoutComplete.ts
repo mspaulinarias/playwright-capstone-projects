@@ -14,10 +14,10 @@ export class checkoutComplete{
 
   }
 
-  async orderSuccessfullyDispatched(){
+  async verifyOrderSuccessfullyDispatched(expetedOrderMessage: string, expectedDescriptionMessage: string){
     await expect(this.iconGreentick).toBeVisible()
-    await expect(this.orderMessageText).toHaveText('Thank you for your order!')
-    await expect(this.descriptionMessageText).toHaveText('Your order has been dispatched, and will arrive just as fast as the pony can get there!')
+    await expect(this.orderMessageText).toHaveText(expetedOrderMessage)
+    await expect(this.descriptionMessageText).toHaveText(expectedDescriptionMessage)
     await expect(this.backHomeButton).toBeVisible()
   }
 }
