@@ -40,7 +40,7 @@ export class login { //todas las clases los nombres inician con mayuscula correg
     //this.test = 'hola' 
   } 
 
-  async checkSuccessfullLogin(page: Page,  expectedInventory: string, expectedTiltePage: string,){ //Aqui ordenar los pasos url, carrito y title. 
+  async verifyCheckSuccessfullLogin(page: Page,  expectedInventory: string, expectedTiltePage: string,){ //Aqui ordenar los pasos url, carrito y title. 
     await expect(this.shoppingCardIcon).toBeVisible()//Se crea este método para validar el expected result de que el icono si sea visible
     await expect(this.titlePage).toHaveText(expectedTiltePage) 
     //COMMENT: Aqui valido que ingrese a la url correcta de inventory. Revisar si esta lógica esta bien. funciona el caso de prueba
@@ -49,13 +49,13 @@ export class login { //todas las clases los nombres inician con mayuscula correg
 
   }
 
-  async errorMessageLogin(expectedErrorMessage: string){
+  async verifyErrorMessageLogin(expectedErrorMessage: string){
     await expect(this.errormessageString).toHaveText(expectedErrorMessage) //encontrar el texto exacto
   
     
   }
   
-  async successfullLogout(){
+  async verifySuccessfullLogout(){
     await this.menuButton.click()
     await this.logoutLink.click()
 

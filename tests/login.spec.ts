@@ -21,7 +21,7 @@ test('Test successfull login', async ({ page }, testInfo) => {
   
   const expectedInventory = '/inventory.html'
   const expectedTiltePage = 'Swag Labs'
-  await loginmainpage.checkSuccessfullLogin(page, expectedInventory, expectedTiltePage)
+  await loginmainpage.verifyCheckSuccessfullLogin(page, expectedInventory, expectedTiltePage)
 
   //Esto se encarga de tomar el screenshot y adjunta la evidencia .png. 
   await testInfo.attach('login', {
@@ -37,7 +37,7 @@ test('Test invalid password', async ({ page }) => {
     await loginmainpage.verifyLoginWithCredential('standard_user', 'incorrectPassword')
 
     const expectedErrorMessage = 'Epic sadface: Username and password do not match any user in this service'
-    await loginmainpage.errorMessageLogin(expectedErrorMessage)
+    await loginmainpage.verifyErrorMessageLogin(expectedErrorMessage)
     
   });
 
@@ -45,7 +45,7 @@ test('Test invalid password', async ({ page }) => {
     
     const loginmainpage = new login(page) 
     await loginmainpage.verifyLoginWithCredential('standard_user', 'secret_sauce')
-    await loginmainpage.successfullLogout()
+    await loginmainpage.verifySuccessfullLogout()
     
 
 }); 
